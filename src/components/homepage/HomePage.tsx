@@ -1,65 +1,101 @@
+import Editor from "@monaco-editor/react";
+import { AnySrvRecord } from "dns";
 import React, { useEffect, useState } from "react";
 
 const HomePage = () => {
   const [htmlCode, setHtmlCode] = useState("");
   const [cssCode, setCssCode] = useState("");
+  const [javascriptCode, setJavascriptCode] = useState("");
+  const [editorShow , setEditorShow] = useState('html')
 
-  const onchangeHtmlHandler = (e: any) => {
-    setHtmlCode(e.target.value);
+  const onchangeHtmlHandler = (value: any) => {
+    setHtmlCode(value);
   };
-  const onchangeCssHandler = (e: any) => {
-    if(e.target.value.includes('body')){
-      console.log('yes');
-    }else{
-      console.log('no');
-      
-    }
-    setCssCode(e.target.value);
+  const onchangeCssHandler = (value: any) => {
+    setCssCode(value);
+  };
+  const onchangeJsHandler = (value: any) => {
+    setJavascriptCode(value);
   };
   useEffect(() => {
-    const root = document.getElementById("showRoot")!;
-    root.innerHTML = htmlCode;
-  }, [htmlCode]);
+    const text =
+      "<html> <head> <style>" +
+      cssCode +
+      "</style>" +
+      "<scri" +
+      "pt>" +
+      javascriptCode +
+      "</scri" +
+      "pt> </head> <body> " +
+      htmlCode +
+      "</body> </html>";
 
-  useEffect(() => {
-    const sheet = new CSSStyleSheet();
-    sheet.replaceSync(cssCode);
-    document.adoptedStyleSheets = [sheet];
-  }, [cssCode]);
+    let iframe = document.getElementById("viewer")!.contentWindow.document;
+    iframe.open();
+    iframe.write(text);
+    iframe.close();
+  }, [htmlCode, cssCode, javascriptCode]);
+
+  // useEffect(() => {
+  //   const sheet = new CSSStyleSheet();
+  //   sheet.replaceSync(cssCode);
+  //   document.adoptedStyleSheets = [sheet];
+  // }, [cssCode]);
 
   return (
     <>
-      <div className='box-wrapper'>
-        <div className='middle-column'>
-          {/* <label htmlFor='html'>HTML</label> */}
-          <textarea
-            name='html'
-            onChange={onchangeHtmlHandler}
-            id='html'
-            className='box1'
-          ></textarea>
-
-          {/* <label htmlFor='html'>CSS</label> */}
-          <textarea
-            name='css'
-            onChange={onchangeCssHandler}
-            id='css'
-            className='box2'
-          ></textarea>
+      <div className='x-wrapper'>
+        <div className='editor-side box'>
+          <div className='lang-btn'>
+            <button onClick={() => setEditorShow('html')}>Html</button>
+            <button onClick={() => setEditorShow('css')}>Css</button>
+            <button onClick={() => setEditorShow('javascript')}>JS</button>
+          </div>
+          <div className='editor-part'>
+            <div className='editor'>
+              {editorShow === 'html' && (
+                <Editor
+                  className='textarea'
+                  width={`100%`}
+                  language={"Html"}
+                  theme={"cobalt"}
+                  defaultValue={`<body>\n\n\n</body>`}
+                  onChange={onchangeHtmlHandler}
+                />
+              )}
+              {editorShow === 'css' && (
+                <Editor
+                  className='textarea'
+                  width={`100%`}
+                  language={"css"}
+                  theme={"cobalt"}
+                  defaultValue={`* {\n\tbox-sizing: border-box;\n\tpadding: 0;\n\tmargin: 0;\n}`}
+                  onChange={onchangeCssHandler}
+                />
+              )}
+              {editorShow === 'javascript' && (
+                <Editor
+                  className='textarea'
+                  width={`100%`}
+                  language={"javascript"}
+                  value={""}
+                  theme={"cobalt"}
+                  defaultValue='console.log("hello World")'
+                  onChange={onchangeJsHandler}
+                />
+              )}
+            </div>
+            <div className='error'>error</div>
+          </div>
         </div>
-        <div className='showRoot' id='showRoot'></div>
+        <div className='output-side box'>
+          <iframe className='showRoot' id='viewer'></iframe>
+        </div>
       </div>
+
+    
     </>
   );
 };
 
 export default HomePage;
-/*
- <div className='box-wrapper'>
-      <div className='middle-column'>
-        <textarea id='box5'>Box 5</textarea>
-        <textarea id='box6'>Box 6</textarea>
-      </div>
-        <div id='box4'>Box 4</div>
-    </div>
-*/

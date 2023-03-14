@@ -1,39 +1,53 @@
-.box-wrapper {
-	height: 100vh;
+*{
+    padding: 0;
+}
+.x-wrapper {
+	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 }
-#showRoot {
-    height: 100vh;
-	border: solid 1px orange;
-    padding: 10px;
-    width: 100%;
-    overflow: auto;
-}
-.middle-column {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-    max-width: 70%;
-    resize: horizontal;
+.editor-side{
+	flex-direction: row;
+    min-width: 50%;
     overflow:auto;
-    background-color: black;
-}
-.middle-column:-webkit-scrollbar { width: 0 !important }
-.middle-column textarea {
-	flex-grow: 1;
-	margin: 0 8px;
-	border: solid 1px red;
-    max-width: 100%;
-    resize: vertical;
-    background-color: #383838;
-    color: aliceblue;
-    padding: 10px;
-    letter-spacing: 1px;
-    line-height: 1.5;
-}
-.middle-column textarea+textarea {
-	margin-top: 8px
+    border: 2px solid black;
+    resize: horizontal;
+    background-color: #494949;
 }
 
+
+.output-side{
+    height: 100vh;
+	border: solid 1px orange;
+    width: 50%;
+    overflow: auto;
+}
+.x-wrapper div + div{
+ margin-left: 4px;
+}
+.lang-btn{
+    width: 100%;
+    height: 40px;
+    border-bottom: 2px solid black;
+}
+.lang-btn button{
+    background-color: #494949;
+    color: #dfdfdf;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    padding: 8px;
+    /* background: none; */
+    cursor: pointer;
+    border: 0;
+    border-radius: 15%;
+    border-right: 2px solid black;
+}
+.lang-btn button:hover{
+    font-size: 20px;
+    padding: 6px 12px;
+    border-left: 2px solid black;
+}
+.textarea{
+    height: 70vh;
+}
